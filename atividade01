@@ -1,0 +1,172 @@
+//Alunos:David Marques dos Reis Lima e Íthalo Silva Soares//
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+
+struct Data
+{
+    int dia, mes, ano;
+
+    void lerdata()
+    {
+
+        printf("\ndia de nascimento:");
+        scanf("%d",&dia);
+        printf("\nmes de nascimento:");
+        scanf("%d",&mes);
+        printf("\nano de nascimento:");
+        scanf("%d",&ano);
+
+
+    }
+
+
+    void imprimirdata()
+    {
+        printf("%d/%d/%d\n",dia, mes, ano);
+
+    }
+
+
+    int calcularIdade()
+    {
+        Data dat = dataatual();
+        if( mes < dat.mes || (mes == dat.mes && dia<= dat.dia))
+        {
+
+            return dat.ano - ano;
+        }
+        return (dat.ano-ano) - 1;
+
+
+    }
+
+
+    Data dataatual()
+    {
+        Data dat;
+
+        struct tm *datatual;
+
+        time_t segundos;
+
+        time(&segundos);
+
+
+        datatual = localtime(&segundos);
+
+        dat.dia=datatual->tm_mday;
+        dat.mes=datatual->tm_mon+1;
+        dat.ano=datatual->tm_year+1900;
+
+        return dat;
+
+    }
+
+};
+
+struct clientes
+{
+    Data nasc;
+    char nome[20];
+    char sexo;
+    int idade;
+
+
+    void cadastrar()
+    {
+
+        fflush(stdin);
+        printf("\ndigite um nome:");
+        scanf("%[^\n]s",nome);
+        fflush(stdin);
+        printf("\ndigite o sexo aqui:");
+        scanf("%c",&sexo);
+        fflush(stdin);
+        nasc.lerdata();
+
+        idade = nasc.calcularIdade();
+
+    }
+
+    void listar()
+    {
+
+        printf("\nnome:%s",nome);
+        printf("\nsexo:%c",sexo);
+        printf("\nnascimento:");
+        nasc.imprimirdata();
+        printf("idade: %d\n",idade);
+
+
+    }
+};
+
+
+
+int main()
+{
+//define struct com 50 posicoes para armazenar cada pessoa
+    clientes cliente[50];
+    int ultimocliente = -1;
+    char op;
+
+
+    do
+    {
+
+        printf("\n\t\tmenu");
+        printf("\n1.cadastrar");
+        printf("\n2.listar");
+        printf("\n3.sair\n\n");
+
+        fflush(stdin);
+        scanf("%c",&op);
+
+        switch(op)
+        {
+
+        case '1':
+
+            cliente[++ultimocliente].cadastrar();
+
+            break;
+
+        case '2':
+
+            for(int i=0; i<= ultimocliente; i++)
+            {
+                cliente[i].listar();
+
+
+            }
+
+            break;
+
+        case '3':
+
+            return 0;
+
+            break;
+
+        default:
+            printf("\nPOR FAVOR DIGITAR NUMEROS MOSTRADOS NO MENU!!!\n");
+            break;
+
+        }
+
+    }while(op!='3');
+
+
+    return 0;
+
+
+}
+
+
+
+
+
+
